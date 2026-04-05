@@ -4,7 +4,7 @@
 
 ---
 
-## 🗂️ โครงสร้างโปรเจค
+## โครงสร้างโปรเจค
 
 ```
 approval-system/
@@ -16,14 +16,14 @@ approval-system/
 
 ---
 
-## ✨ ฟีเจอร์หลัก
+## ฟีเจอร์หลัก
 
-### 👤 User
+### User
 - ล็อกอินเข้าสู่ระบบด้วยบัญชีที่ Admin สร้างให้
 - สร้างรายการคำขออนุมัติ (Approval Request)
 - ติดตามสถานะคำขอของตัวเอง
 
-### 🛡️ Admin
+### Admin
 - ล็อกอินเข้าสู่ระบบ
 - เพิ่ม / จัดการบัญชีผู้ใช้ (User)
 - ดูรายการคำขออนุมัติทั้งหมด
@@ -31,7 +31,7 @@ approval-system/
 
 ---
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 | ส่วน | เทคโนโลยี |
 |---|---|
@@ -42,7 +42,7 @@ approval-system/
 
 ---
 
-## 🚀 วิธีรันในเครื่อง (Local Development)
+## วิธีรันในเครื่อง (Local Development)
 
 ### สิ่งที่ต้องมี
 - [Docker](https://www.docker.com/) และ Docker Compose
@@ -94,7 +94,7 @@ DB_NAME=approval_db
 
 ---
 
-## 🗄️ Database
+## Database
 
 | Config | ค่า |
 |---|---|
@@ -106,10 +106,29 @@ DB_NAME=approval_db
 
 ---
 
-## 📦 Deploy
+## 📸 UI Screenshots
 
-| ส่วน | Platform |
-|---|---|
-| Frontend (Angular) | [Vercel](https://vercel.com) |
-| Backend (Go) | [Render](https://render.com) |
-| Database (PostgreSQL) | [Render](https://render.com) |
+### หน้า Login
+<img width="1920" height="1032" alt="Screenshot 2026-04-05 125458" src="https://github.com/user-attachments/assets/e104f41c-0727-4293-8d87-a761db5275cd" />
+
+
+### หน้า Dashboard (User)
+<img width="1920" height="1032" alt="Screenshot 2026-04-05 125726" src="https://github.com/user-attachments/assets/edc009d2-0a4a-41e8-badd-b6a970cfbac6" />
+
+
+### หน้าต่างสร้างคำขอใหม่
+<img width="1920" height="1032" alt="Screenshot 2026-04-05 125733" src="https://github.com/user-attachments/assets/1f4dcd43-ed34-42df-9b4b-70a29a811de3" />
+
+
+### หน้า Admin — รายการคำขอทั้งหมด
+<img width="1920" height="1032" alt="Screenshot 2026-04-05 125618" src="https://github.com/user-attachments/assets/e09a81ca-79b1-4713-9f2d-cc3aa102a8b9" />
+
+
+### หน้าสร้างคำขออนุมัติ
+<img width="1920" height="1032" alt="Screenshot 2026-04-05 125639" src="https://github.com/user-attachments/assets/02042900-9770-4ad2-a498-6515b69cea50" />
+
+
+### หน้า Admin — อนุมัติ / ไม่อนุมัติ
+<img width="1920" height="1032" alt="Screenshot 2026-04-05 125658" src="https://github.com/user-attachments/assets/e4ad8a92-7ec2-4bb3-ab4c-5a77b27d16e9" />
+
+---
