@@ -1,0 +1,294 @@
+@import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;700&display=swap');
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  height: 100%;
+  overflow: hidden;
+  font-family: 'Sarabun', sans-serif;
+}
+
+/* ===== Layout ===== */
+.app-shell {
+  display: flex;
+  height: 100vh;
+}
+
+/* ===== Background ===== */
+.main-content {
+  flex: 1;
+  padding: 28px 24px;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+}
+
+.content-inner {
+  width: 100%;
+  max-width: 860px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ===== Sidebar ===== */
+.sidebar {
+  width: 220px;
+  background: #1565c0;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+}
+
+.sidebar-logo {
+  padding: 24px 20px 16px;
+  font-size: 17px;
+  font-weight: 700;
+  border-bottom: 1px solid rgba(255,255,255,0.15);
+}
+
+.sidebar-role {
+  padding: 10px 20px;
+  font-size: 12px;
+  color: rgba(255,255,255,0.6);
+  border-bottom: 1px solid rgba(255,255,255,0.15);
+}
+
+.sidebar-menu { flex: 1; padding-top: 8px; }
+
+.sidebar-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 20px;
+  font-size: 14px;
+  color: rgba(255,255,255,0.85);
+  cursor: pointer;
+  border-right: 3px solid transparent;
+}
+
+.sidebar-item:hover { background: rgba(255,255,255,0.1); }
+.sidebar-item.active {
+  background: rgba(255,255,255,0.15);
+  border-right-color: white;
+  color: white;
+  font-weight: 500;
+}
+
+.sidebar-bottom {
+  padding: 16px 20px;
+  border-top: 1px solid rgba(255,255,255,0.15);
+}
+
+/* ===== Panel ===== */
+.admin-panel, .user-panel {
+  background: white;
+  border-radius: 16px;
+  padding: 28px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+}
+
+.panel-title { font-size: 18px; font-weight: 700; margin-bottom: 16px; }
+.panel-title.admin { color: #d32f2f; }
+.panel-title.user  { color: #1565c0; }
+
+/* ===== Action Bar ===== */
+.action-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+  flex-shrink: 0;
+}
+
+.btn-approve, .btn-reject {
+  padding: 7px 20px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-family: 'Sarabun', sans-serif;
+  cursor: pointer;
+}
+
+.btn-approve { background: #e8f5e9; color: #2e7d32; border: 1px solid #a5d6a7; }
+.btn-reject  { background: #ffebee; color: #c62828; border: 1px solid #ef9a9a; }
+.btn-approve:disabled, .btn-reject:disabled { opacity: 0.4; cursor: not-allowed; }
+
+.sel-count { font-size: 13px; color: #666; }
+
+/* ===== Table Scroll ===== */
+.table-scroll {
+  overflow-y: auto;     /* เลื่อนได้เฉพาะตรงนี้ */
+  flex: 1;              /* ขยายเต็มพื้นที่ที่เหลือ */
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+}
+
+.request-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.request-table thead tr {
+  background: #1565c0;
+  color: white;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.request-table th { padding: 11px 14px; font-weight: 500; text-align: center; }
+.request-table td { padding: 10px 14px; text-align: center; border-bottom: 1px solid #f0f0f0; }
+.request-table tbody tr:hover { background: #f5f6fa; }
+
+.row-selected { background: #e3f2fd !important; }
+.row-done {
+  background: #eeeeee !important;
+  pointer-events: none;
+}
+.row-done .badge { opacity: 1; }
+.text-left { text-align: left; }
+.empty-row { text-align: center; color: #999; padding: 24px; }
+
+input[type='checkbox'] { width: 15px; height: 15px; cursor: pointer; accent-color: #1565c0; }
+
+/* ===== Badge ===== */
+.badge {
+  display: inline-block;
+  padding: 3px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.badge-pending  { background: #fff8e1; color: #f57f17; border: 1px solid #ffe082; }
+.badge-approved { background: #e8f5e9; color: #2e7d32; border: 1px solid #a5d6a7; }
+.badge-rejected { background: #ffebee; color: #c62828; border: 1px solid #ef9a9a; }
+
+/* ===== Buttons ===== */
+.btn-add {
+  background: #1565c0; color: white; border: none;
+  padding: 9px 20px; border-radius: 8px; cursor: pointer;
+  font-weight: 700; font-family: 'Sarabun', sans-serif;
+  font-size: 14px; margin-bottom: 16px; flex-shrink: 0;
+}
+
+.btn-logout {
+  width: 100%; background: rgba(255,255,255,0.1); color: white;
+  border: 1px solid rgba(255,255,255,0.25); padding: 9px 16px;
+  border-radius: 6px; cursor: pointer; font-size: 13px;
+  font-family: 'Sarabun', sans-serif;
+}
+
+/* ===== Modal ===== */
+.modal-backdrop {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.6);
+  display: flex; justify-content: center; align-items: center;
+  z-index: 9999; backdrop-filter: blur(3px);
+}
+
+.modal-card {
+  background: white; width: 100%; max-width: 450px;
+  border-radius: 12px; overflow: hidden;
+  animation: popIn 0.25s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+}
+
+.modal-header {
+  padding: 15px 20px; display: flex;
+  justify-content: space-between; align-items: center;
+  border-bottom: 1px solid #eee;
+}
+
+.modal-header-approve { background: #e8f5e9; border-color: #a5d6a7; }
+.modal-header-approve h3 { color: #2e7d32; margin: 0; }
+.modal-header-reject  { background: #ffebee; border-color: #ef9a9a; }
+.modal-header-reject  h3 { color: #c62828; margin: 0; }
+
+.modal-body { padding: 20px; display: flex; flex-direction: column; gap: 8px; }
+.modal-body label { font-weight: 500; color: #333; }
+.modal-body textarea {
+  width: 100%; min-height: 120px; padding: 12px;
+  border: 1px solid #ccc; border-radius: 8px;
+  resize: vertical; font-family: 'Sarabun', sans-serif; font-size: 15px;
+}
+.modal-body textarea:focus { outline: none; border-color: #1976d2; box-shadow: 0 0 0 3px rgba(25,118,210,0.1); }
+
+.action-summary { font-size: 14px; color: #444; line-height: 1.6; }
+
+.modal-footer {
+  padding: 14px 20px; background: #f8f9fa;
+  display: flex; justify-content: flex-end; gap: 8px;
+}
+
+.btn-cancel {
+  background: #e0e0e0; border: none; padding: 9px 20px;
+  border-radius: 6px; cursor: pointer; font-family: 'Sarabun', sans-serif;
+}
+
+.btn-confirm-approve {
+  background: #2e7d32; color: white; border: none;
+  padding: 9px 20px; border-radius: 6px; cursor: pointer;
+  font-family: 'Sarabun', sans-serif;
+}
+
+.btn-confirm-reject {
+  background: #c62828; color: white; border: none;
+  padding: 9px 20px; border-radius: 6px; cursor: pointer;
+  font-family: 'Sarabun', sans-serif;
+}
+
+.btn-close { background: none; border: none; font-size: 22px; cursor: pointer; color: #666; }
+
+@keyframes popIn {
+  from { transform: scale(0.85); opacity: 0; }
+  to   { transform: scale(1);    opacity: 1; }
+}
+
+/* ===== User Panel ===== */
+.user-panel {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+}
+
+.table-container {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+}
+
+.table-container h3 {
+  font-size: 15px;
+  color: #333;
+  margin-bottom: 12px;
+  flex-shrink: 0;
+}
+
+/* ===== btn-submit (modal สร้างคำขอ) ===== */
+.btn-submit {
+  background: #1565c0;
+  color: white;
+  border: none;
+  padding: 9px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-family: 'Sarabun', sans-serif;
+  font-size: 14px;
+}
+
+.btn-submit:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn-submit:hover:not(:disabled) {
+  background: #0d47a1;
+}

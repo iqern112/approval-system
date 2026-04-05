@@ -1,0 +1,38 @@
+<div class="login-wrapper">
+  <div class="login-card">
+    <div class="login-header">
+      <div class="logo-icon">🔐</div>
+      <h2>ยินดีต้อนรับ</h2>
+      <p>กรุณาเข้าสู่ระบบเพื่อใช้งาน</p>
+    </div>
+
+    <form (submit)="$event.preventDefault(); onLogin()" class="login-form">
+      <div class="input-group">
+        <label>ชื่อผู้ใช้งาน</label>
+        <input 
+          type="text" 
+          [(ngModel)]="loginData.username" 
+          placeholder="กรุณากรอก Username" 
+          name="username"
+          required
+          [disabled]="isLoading">
+      </div>
+
+      <div class="input-group">
+        <label>รหัสผ่าน</label>
+        <input 
+          type="password" 
+          [(ngModel)]="loginData.password" 
+          placeholder="กรุณากรอก Password" 
+          name="password"
+          required
+          [disabled]="isLoading">
+      </div>
+
+      <button type="submit" [disabled]="isLoading" class="login-btn">
+        <span *ngIf="!isLoading">เข้าสู่ระบบ</span>
+        <span *ngIf="isLoading" class="loader"></span>
+      </button>
+    </form>
+  </div>
+</div>

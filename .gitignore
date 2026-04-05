@@ -1,0 +1,21 @@
+# ========== Go Backend ==========
+approval-back/.env
+approval-back/tmp/
+approval-back/*.exe
+approval-back/vendor/
+
+# ========== Angular Frontend ==========
+approval-front/node_modules/
+approval-front/dist/
+approval-front/.angular/cache/
+
+# ========== Environment / Secrets ==========
+.env
+*.env
+.env.local
+.env.production
+
+# ========== OS / Editor ==========
+.DS_Store
+Thumbs.db
+.vscode/settings.json

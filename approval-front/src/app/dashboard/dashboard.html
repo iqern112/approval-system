@@ -1,0 +1,252 @@
+<div class="app-shell">
+  <!-- ========== MAIN CONTENT ========== -->
+  <div class="main-content">
+    <div class="content-inner">
+      <!-- ADMIN -->
+      @if (userRole() === 'admin') {
+        <div class="admin-panel">
+          <h2 class="panel-title admin">โหมดผู้ดูแลระบบ (ADMIN)</h2>
+
+          <div class="action-bar">
+            <button
+              class="btn-approve"
+              [disabled]="selectedIds().size === 0"
+              (click)="openActionModal('approved')"
+            >
+              อนุมัติ
+            </button>
+            <button
+              class="btn-reject"
+              [disabled]="selectedIds().size === 0"
+              (click)="openActionModal('rejected')"
+            >
+              ไม่อนุมัติ
+            </button>
+            @if (selectedIds().size > 0) {
+              <span class="sel-count">เลือก {{ selectedIds().size }} รายการ</span>
+            }
+          </div>
+          <div class="table-scroll">
+            <table class="request-table">
+              <thead>
+                <tr>
+                  <th>
+                    <input
+                      type="checkbox"
+                      [checked]="isAllSelected()"
+                      [indeterminate]="isIndeterminate()"
+                      (change)="toggleAll($event)"
+                    />
+                  </th>
+                  <th>รายละเอียด</th>
+                  <th>เหตุผล</th>
+                  <th>สถานะเอกสาร</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (req of requests(); track req.id) {
+                  <tr
+                    [class.row-selected]="selectedIds().has(req.id)"
+                    [class.row-done]="req.status !== 'pending'"
+                  >
+                    <td>
+                      <input
+                        type="checkbox"
+                        [checked]="selectedIds().has(req.id)"
+                        [disabled]="req.status !== 'pending'"
+                        (change)="toggleSelect(req.id)"
+                      />
+                    </td>
+                    <td class="text-left">{{ req.title }}</td>
+                    <td>{{ req.admin_reason || '-' }}</td>
+                    <td>
+                      <span
+                        class="badge"
+                        [ngClass]="{
+                          'badge-pending': req.status === 'pending',
+                          'badge-approved': req.status === 'approved',
+                          'badge-rejected': req.status === 'rejected',
+                        }"
+                        >{{ statusLabel[req.status] }}</span
+                      >
+                    </td>
+                  </tr>
+                } @empty {
+                  <tr>
+                    <td colspan="4" class="empty-row">ไม่พบข้อมูล</td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        </div>
+      }
+
+      <!-- USER -->
+      @else if (userRole() === 'user') {
+        <div class="user-panel">
+          <h2 class="panel-title user">โหมดพนักงาน (USER)</h2>
+          <button class="btn-add" (click)="openModal()">+ สร้างคำขอใหม่</button>
+
+          <div class="table-container">
+            <h3>ประวัติคำขอของฉัน</h3>
+            <div class="table-scroll">
+              <table class="request-table">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>หัวข้อ</th>
+                    <th>สถานะ</th>
+                    <th>เหตุผลจากแอดมิน</th>
+                    <th>วันที่สร้าง</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @for (item of requests(); track item.id) {
+                    <tr>
+                      <td>{{ item.id }}</td>
+                      <td class="text-left">{{ item.title }}</td>
+                      <td>
+                        <span
+                          class="badge"
+                          [ngClass]="{
+                            'badge-pending': item.status === 'pending',
+                            'badge-approved': item.status === 'approved',
+                            'badge-rejected': item.status === 'rejected',
+                          }"
+                          >{{ statusLabel[item.status] }}</span
+                        >
+                      </td>
+                      <td>{{ item.admin_reason || '-' }}</td>
+                      <td>{{ item.created_at | date: 'dd/MM/yyyy HH:mm' }}</td>
+                    </tr>
+                  } @empty {
+                    <tr>
+                      <td colspan="5" class="empty-row">ไม่พบข้อมูลคำขอของคุณ</td>
+                    </tr>
+                  }
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      }
+
+      <!-- ERROR -->
+      @else {
+        <div class="error-panel">
+          <p>ไม่พบสิทธิ์การใช้งาน หรือเซสชันหมดอายุ</p>
+          <button (click)="onLogout()">กลับไปหน้า Login</button>
+        </div>
+      }
+    </div>
+  </div>
+
+  <!-- ========== SIDEBAR ขวา ========== -->
+  <div class="sidebar">
+    <div class="sidebar-logo">📋 ระบบคำขอ</div>
+    <div class="sidebar-role">
+      สิทธิ์ : {{ userRole() === 'admin' ? 'ผู้ดูแลระบบ' : 'พนักงาน' }}
+    </div>
+
+    <div class="sidebar-menu">
+      @if (userRole() === 'admin') {
+        <div class="sidebar-item active"><span class="icon">📄</span> คำขอทั้งหมด</div>
+      }
+      @if (userRole() === 'user') {
+        <div class="sidebar-item active"><span class="icon">📄</span> คำขอของฉัน</div>
+        <div class="sidebar-item" (click)="openModal()">
+          <span class="icon">➕</span> สร้างคำขอใหม่
+        </div>
+      }
+    </div>
+
+    <div class="sidebar-bottom">
+      <button class="btn-logout" (click)="onLogout()">ออกจากระบบ</button>
+    </div>
+  </div>
+
+  <!-- ========== MODAL ========== -->
+  @if (isModalOpen()) {
+    <div class="modal-backdrop">
+      <div class="modal-card">
+        <div class="modal-header">
+          <h3>สร้างคำขอใหม่</h3>
+          <button class="btn-close" (click)="closeModal()">&times;</button>
+        </div>
+        <div class="modal-body">
+          <label for="requestTitle">รายละเอียดรายการที่ต้องการ</label>
+          <textarea
+            id="requestTitle"
+            [ngModel]="newRequestTitle()"
+            (ngModelChange)="newRequestTitle.set($event)"
+            placeholder="ตัวอย่าง: ขอเบิกเมาส์ไร้สาย 6 อัน"
+            rows="4"
+            [disabled]="isSubmitting()"
+          >
+          </textarea>
+        </div>
+        <div class="modal-footer">
+          <button class="btn-cancel" (click)="closeModal()" [disabled]="isSubmitting()">
+            ยกเลิก
+          </button>
+          <button class="btn-submit" (click)="submitRequest()" [disabled]="isSubmitting()">
+            @if (isSubmitting()) {
+              <span></span> กำลังส่ง...
+            } @else {
+              ยืนยันส่งคำขอ
+            }
+          </button>
+        </div>
+      </div>
+    </div>
+  }
+  @if (isActionModalOpen()) {
+    <div class="modal-backdrop">
+      <div class="modal-card">
+        <div
+          class="modal-header"
+          [ngClass]="{
+            'modal-header-approve': actionType() === 'approved',
+            'modal-header-reject': actionType() === 'rejected',
+          }"
+        >
+          <h3>
+            {{ actionType() === 'approved' ? '✅ ยืนยันการอนุมัติ' : '❌ ยืนยันการไม่อนุมัติ' }}
+          </h3>
+          <button class="btn-close" (click)="closeActionModal()">&times;</button>
+        </div>
+
+        <div class="modal-body">
+          <p class="action-summary">
+            รายการที่เลือก
+            <strong>{{ pendingActionIds().length }} รายการ</strong>
+            จะถูก
+            <strong [style.color]="actionType() === 'approved' ? '#2e7d32' : '#c62828'">
+              {{ actionType() === 'approved' ? 'อนุมัติ' : 'ไม่อนุมัติ' }}
+            </strong>
+          </p>
+
+          <label for="actionReason"> เหตุผล <span style="color: #c62828">*</span> </label>
+          <textarea
+            id="actionReason"
+            [ngModel]="actionReason()"
+            (ngModelChange)="actionReason.set($event)"
+            placeholder="กรอกเหตุผลประกอบการพิจารณา..."
+            rows="4"
+          ></textarea>
+        </div>
+
+        <div class="modal-footer">
+          <button class="btn-cancel" (click)="closeActionModal()">ยกเลิก</button>
+          <button
+            [ngClass]="actionType() === 'approved' ? 'btn-confirm-approve' : 'btn-confirm-reject'"
+            (click)="confirmAction()"
+          >
+            {{ actionType() === 'approved' ? 'ยืนยันอนุมัติ' : 'ยืนยันไม่อนุมัติ' }}
+          </button>
+        </div>
+      </div>
+    </div>
+  }
+</div>
